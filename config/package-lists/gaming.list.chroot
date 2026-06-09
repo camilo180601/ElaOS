@@ -8,3 +8,4 @@ vulkan-tools
 mesa-vulkan-drivers
 mesa-utils
 libvulkan1
+power-profiles-daemon

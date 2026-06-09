@@ -8,7 +8,9 @@ ISO, con tres modos intercambiables como si fueran un tema.
 - **Escritorio:** GNOME + tema **WhiteSur** (macOS Big Sur), iconos WhiteSur,
   cursores McMojave, dock inferior, botones de ventana a la izquierda.
 - **Seguridad:** `kali-linux-everything` (todo el arsenal de Kali).
-- **Gaming:** Steam, Lutris, Wine, GameMode, MangoHud, drivers Vulkan/Mesa.
+- **Gaming (siempre activo):** Steam y Lutris fijos en el dock, Wine, GameMode,
+  MangoHud y drivers Vulkan/Mesa instalados de forma permanente. Puedes abrir un
+  juego y jugar **en cualquier modo**; no hay que "activar" nada.
 - **Modos:** `elaos-mode {normal|gaming|hacking}` enciende/apaga la capa de
   seguridad en el menú. Las herramientas siempre están instaladas; el modo solo
   cambia la experiencia.
@@ -62,6 +64,10 @@ Terminal con identidad propia: **Kitty** (emulador GPU, estilo macOS) + **Starsh
   `tema` (= `elaos-term-theme`).
 
 ## Los tres modos
+
+> El **gaming está siempre disponible**, independientemente del modo. Los modos
+> solo controlan la capa de seguridad y el perfil de rendimiento; jugar funciona
+> siempre. El modo `gaming` además sube el perfil de energía a máximo rendimiento.
 
 Desde el **botón de la barra superior** (extensión ElaOS Modes), desde la
 **app de bienvenida**, o por terminal (es por-usuario, sin sudo):
