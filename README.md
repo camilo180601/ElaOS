@@ -50,8 +50,10 @@ que genere las ISOs y las suba a un Release.
 ### Local (Docker)
 
 ```bash
-./build.sh amd64    # PC Intel/AMD (en Mac M-series se emula: lento)
-./build.sh arm64    # ARM / Apple Silicon (nativo, rápido)
+./build-all.sh      # construye AMBAS ISOs (amd64 + arm64) → ElaOS-<arch>.iso + .sha256
+
+./build.sh amd64    # solo PC Intel/AMD (en Mac M-series se emula: lento)
+./build.sh arm64    # solo ARM / Apple Silicon (nativo, rápido)
 
 # Elegir el tamaño del arsenal:
 ELAOS_KALI_META=kali-tools-top10     ./build.sh arm64   # ligero
