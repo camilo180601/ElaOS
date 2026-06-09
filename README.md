@@ -39,6 +39,24 @@ decenas de GB, alto riesgo de fallo). Recomendado:
 ./build.sh arm64    # ARM / Apple Silicon — nativo, sin Steam/Wine
 ```
 
+## ElaOS Terminal
+
+Terminal con identidad propia: **Kitty** (emulador GPU, estilo macOS) + **Starship**
+(prompt con la paleta de marca morado→coral) + **fastfetch** (bienvenida con el logo).
+
+- Tema claro/oscuro alternable:
+  ```bash
+  elaos-term-theme dark    # o: tema dark
+  elaos-term-theme light   # o: tema light
+  ```
+- Totalmente personalizable: edita `~/.config/kitty/kitty.conf` (fuente, opacidad,
+  blur, padding), `~/.config/starship.toml` (prompt) y los temas de color en
+  `/usr/share/elaos/kitty-themes/`.
+- Atajos: `Ctrl+Shift+T` nueva pestaña, `Ctrl+Shift+Enter` nueva ventana,
+  `Ctrl+Shift +/-` tamaño de fuente.
+- Aliases incluidos: `ll`, `lt` (eza), `cat` (bat), `modo` (= `sudo elaos-mode`),
+  `tema` (= `elaos-term-theme`).
+
 ## Los tres modos
 
 ```bash
@@ -61,10 +79,14 @@ ElaOS/
     │   ├── branding.list.chroot     → deps de los temas macOS
     │   ├── kali-tools.list.chroot   → arsenal de seguridad (everything)
     │   ├── gaming.list.chroot       → Lutris, GameMode, MangoHud, Vulkan
+    │   ├── terminal.list.chroot     → kitty, fastfetch, zsh
     │   └── installer.list.chroot    → Calamares
     ├── hooks/normal/
-    │   ├── 0100-macos-theme...      → WhiteSur, iconos, cursores, dock
-    │   └── 0200-gaming...           → multiarch i386 + Steam + Wine (amd64)
+    │   ├── 0100-macos-theme...      → WhiteSur, iconos, cursores, dock, login GDM
+    │   ├── 0200-gaming...           → multiarch i386 + Steam + Wine (amd64)
+    │   ├── 0300-plymouth...         → splash de arranque ElaOS
+    │   ├── 0400-terminal...         → starship + Nerd Font + kitty/zsh por defecto
+    │   └── 0900-enforce-macos-look  → reafirma el look macOS sobre Kali
     └── includes.chroot/
         ├── usr/local/bin/elaos-mode → toggle normal/gaming/hacking
         └── etc/

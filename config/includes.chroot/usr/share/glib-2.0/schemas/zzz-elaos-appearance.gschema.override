@@ -24,3 +24,7 @@ button-layout='close,minimize,maximize:'
 
 [org.gnome.shell]
 enabled-extensions=['dash-to-dock@micxgx.gmail.com']
+
+[org.gnome.desktop.default-applications.terminal]
+exec='kitty'
+exec-arg=''

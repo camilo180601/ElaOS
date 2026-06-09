@@ -1,0 +1,54 @@
+# Prompt de ElaOS — paleta de marca (morado → coral)
+add_newline = true
+palette = "elaos"
+
+format = "$os$username$directory$git_branch$git_status$cmd_duration$line_break$character"
+
+[palettes.elaos]
+purple  = "#8637E0"
+magenta = "#B92DA1"
+pink    = "#E03972"
+coral   = "#F16E62"
+muted   = "#9A9AAE"
+green   = "#B9F27C"
+
+[os]
+disabled = false
+style = "fg:purple bold"
+format = "[$symbol]($style)"
+[os.symbols]
+Debian = " "
+Kali = " "
+Linux = " "
+Ubuntu = " "
+
+[username]
+show_always = true
+style_user = "fg:magenta bold"
+style_root = "fg:pink bold"
+format = "[ $user]($style) "
+
+[directory]
+style = "fg:coral bold"
+truncation_length = 3
+truncation_symbol = "…/"
+format = "[$path]($style) "
+
+[git_branch]
+symbol = " "
+style = "fg:pink"
+format = "[$symbol$branch]($style) "
+
+[git_status]
+style = "fg:pink"
+format = "([$all_status$ahead_behind]($style) )"
+
+[cmd_duration]
+min_time = 500
+style = "fg:muted"
+format = "[ $duration]($style) "
+
+[character]
+success_symbol = "[➜](bold fg:green)"
+error_symbol = "[➜](bold fg:pink)"
+vimcmd_symbol = "[](bold fg:purple)"

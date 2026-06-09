@@ -1,0 +1,41 @@
+#!/bin/sh
+# ElaOS Terminal: instala starship + Nerd Font, herramientas CLI opcionales,
+# y fija kitty/zsh por defecto.
+set -e
+
+echo "[ElaOS] Configurando ElaOS Terminal..."
+
+# Herramientas CLI bonitas (opcionales; no rompen el build si faltan en repos)
+apt-get install -y --no-install-recommends eza bat fzf \
+    || echo "[ElaOS] aviso: eza/bat/fzf no disponibles, sigo."
+
+# Starship (prompt) — no está en repos: instalador oficial
+if ! command -v starship >/dev/null 2>&1; then
+    curl -sS https://starship.rs/install.sh | sh -s -- -y -b /usr/local/bin \
+        || echo "[ElaOS] aviso: no se pudo instalar starship."
+fi
+
+# FiraCode Nerd Font (glifos del prompt y fastfetch)
+NF_DIR="/usr/share/fonts/truetype/firacode-nerd"
+mkdir -p "$NF_DIR"
+if curl -fsSL -o /tmp/FiraCode.zip \
+    https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraCode.zip; then
+    unzip -o /tmp/FiraCode.zip '*.ttf' -d "$NF_DIR" >/dev/null || true
+else
+    echo "[ElaOS] aviso: no se pudo descargar FiraCode Nerd Font."
+fi
+rm -f /tmp/FiraCode.zip
+fc-cache -f >/dev/null 2>&1 || true
+
+# Kitty como terminal por defecto del sistema
+if [ -x /usr/bin/kitty ]; then
+    update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator /usr/bin/kitty 60
+    update-alternatives --set x-terminal-emulator /usr/bin/kitty || true
+fi
+
+# zsh como shell por defecto para los usuarios nuevos (instalación)
+if [ -x /usr/bin/zsh ]; then
+    sed -i 's|^SHELL=.*|SHELL=/usr/bin/zsh|' /etc/default/useradd 2>/dev/null || true
+fi
+
+echo "[ElaOS] ElaOS Terminal listo."

@@ -1,0 +1,8 @@
+# ElaOS Terminal
+kitty            # emulador moderno (GPU, themable, estilo macOS)
+fastfetch        # bienvenida con el logo de ElaOS
+zsh              # shell por defecto
+curl             # usado por el hook (instala starship + Nerd Font)
+unzip            # descomprime la Nerd Font
+fontconfig
+fonts-firacode
