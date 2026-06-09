@@ -1,0 +1,5 @@
+# Instalador gráfico amigable (estilo asistente, más intuitivo que debian-installer).
+# calamares-settings-debian aporta una configuración funcional por defecto.
+# NOTA: incluido pero pendiente de pruebas en hardware/VM real.
+calamares
+calamares-settings-debian

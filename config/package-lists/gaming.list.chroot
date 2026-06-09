@@ -1,0 +1,10 @@
+# Capa de gaming de ElaOS (compatibilidad de juegos).
+# Paquetes nativos. Steam/Wine requieren i386 y se instalan en hooks/normal/0200.
+lutris
+gamemode
+mangohud
+goverlay
+vulkan-tools
+mesa-vulkan-drivers
+mesa-utils
+libvulkan1

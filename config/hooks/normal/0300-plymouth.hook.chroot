@@ -1,0 +1,29 @@
+#!/bin/sh
+# Splash de arranque: usa el tema propio de ElaOS (logo sobre fondo oscuro).
+# Si falta el logo (logo.png), cae a 'spinner' para no romper el arranque.
+set -e
+
+ELAOS_THEME="/usr/share/plymouth/themes/elaos"
+LOGO="${ELAOS_THEME}/logo.png"
+
+if [ -f "$LOGO" ]; then
+    THEME="elaos"
+    echo "[ElaOS] Logo encontrado: usando splash propio de ElaOS."
+else
+    THEME="spinner"
+    echo "[ElaOS] AVISO: no hay logo.png en ${ELAOS_THEME}; uso 'spinner' como respaldo."
+    echo "[ElaOS]        Copia el logo claro a ese archivo y reconstruye para tu marca."
+fi
+
+if command -v plymouth-set-default-theme >/dev/null 2>&1; then
+    echo "[ElaOS] Fijando splash de arranque '$THEME'..."
+    plymouth-set-default-theme -R "$THEME" || {
+        echo "[ElaOS] aviso: -R falló; aplico sin regenerar y actualizo initramfs."
+        plymouth-set-default-theme "$THEME" || true
+        update-initramfs -u || true
+    }
+else
+    echo "[ElaOS] plymouth no disponible, omito splash."
+fi
+
+echo "[ElaOS] Splash de arranque configurado."

@@ -1,0 +1,23 @@
+#!/bin/sh
+# Capa de gaming: habilita multiarch i386 e instala Steam + Wine (solo amd64).
+set -e
+
+ARCH="$(dpkg --print-architecture)"
+if [ "$ARCH" != "amd64" ]; then
+    echo "[ElaOS] Gaming (Steam/Wine i386) solo aplica a amd64; arch=$ARCH, omito."
+    exit 0
+fi
+
+echo "[ElaOS] Habilitando arquitectura i386 (multiarch) para gaming..."
+dpkg --add-architecture i386
+apt-get update
+
+echo "[ElaOS] Instalando Steam, Wine y capa de compatibilidad..."
+apt-get install -y --no-install-recommends \
+    steam-installer \
+    wine \
+    wine64 \
+    winetricks \
+    || echo "[ElaOS] aviso: algún paquete de gaming no se instaló, continúo."
+
+echo "[ElaOS] Capa de gaming lista."

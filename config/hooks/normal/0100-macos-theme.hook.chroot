@@ -1,0 +1,46 @@
+#!/bin/sh
+# Instala la capa visual estilo macOS Big Sur dentro del sistema vivo:
+#   - Tema GTK/Shell  : WhiteSur
+#   - Iconos          : WhiteSur
+#   - Cursores        : McMojave
+#   - Dock inferior   : extensión Dash to Dock
+#   - Wallpaper        : WhiteSur
+set -e
+
+TMP="/tmp/elaos-theme"
+rm -rf "$TMP"
+mkdir -p "$TMP"
+cd "$TMP"
+
+echo "[ElaOS] Instalando tema GTK WhiteSur..."
+git clone --depth=1 https://github.com/vinceliuice/WhiteSur-gtk-theme.git
+( cd WhiteSur-gtk-theme && ./install.sh -d /usr/share/themes -c Light -c Dark -l )
+
+echo "[ElaOS] Instalando iconos WhiteSur..."
+git clone --depth=1 https://github.com/vinceliuice/WhiteSur-icon-theme.git
+( cd WhiteSur-icon-theme && ./install.sh -d /usr/share/icons )
+
+echo "[ElaOS] Instalando cursores McMojave..."
+git clone --depth=1 https://github.com/vinceliuice/McMojave-cursors.git
+( cd McMojave-cursors && ./install.sh )
+
+echo "[ElaOS] Instalando Dash to Dock (dock inferior estilo macOS)..."
+git clone --depth=1 https://github.com/micheleg/dash-to-dock.git
+( cd dash-to-dock && make install ) || echo "[ElaOS] aviso: Dash to Dock no se pudo compilar, continúo."
+
+echo "[ElaOS] Instalando wallpaper por defecto..."
+git clone --depth=1 https://github.com/vinceliuice/WhiteSur-wallpapers.git
+mkdir -p /usr/share/backgrounds/elaos
+WP="$(find WhiteSur-wallpapers -type f \( -name '*.jpg' -o -name '*.png' \) | head -n1)"
+[ -n "$WP" ] && cp "$WP" /usr/share/backgrounds/elaos/default.jpg
+
+echo "[ElaOS] Aplicando tema de login (GDM) estilo macOS..."
+( cd WhiteSur-gtk-theme && ./tweaks.sh -g -b /usr/share/backgrounds/elaos/default.jpg ) \
+    || echo "[ElaOS] aviso: no se pudo aplicar el tema de GDM, continúo."
+
+echo "[ElaOS] Compilando base de datos dconf con los defaults..."
+dconf update || true
+
+cd /
+rm -rf "$TMP"
+echo "[ElaOS] Capa visual macOS instalada."

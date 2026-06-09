@@ -1,0 +1,11 @@
+# Dependencias para compilar/instalar los temas estilo macOS (ver hooks/normal/0100)
+git
+sassc
+libglib2.0-dev-bin
+gnome-themes-extra
+gtk2-engines-murrine
+
+# Splash de arranque (reemplaza el branding de Kali por uno limpio)
+plymouth
+plymouth-themes
+plymouth-label

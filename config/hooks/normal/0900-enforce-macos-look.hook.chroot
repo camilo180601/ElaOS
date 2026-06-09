@@ -1,0 +1,30 @@
+#!/bin/sh
+# Se ejecuta AL FINAL (0900), después de instalar Kali/gaming y de los hooks
+# de tema. Reafirma el look macOS por encima de cualquier ajuste de Kali.
+set -e
+
+echo "[ElaOS] Reforzando el look macOS sobre la capa Kali..."
+
+# 1. Recompila los esquemas: nuestro zzz-elaos-*.override queda último y gana.
+glib-compile-schemas /usr/share/glib-2.0/schemas || true
+
+# 2. Recompila la base dconf (defaults de /etc/dconf/db/local.d).
+dconf update || true
+
+# 3. GNOME como sesión por defecto y gdm3 como gestor de inicio,
+#    aunque 'everything' haya instalado XFCE/KDE/etc.
+if [ -x /usr/sbin/gdm3 ]; then
+    echo "/usr/sbin/gdm3" > /etc/X11/default-display-manager
+    echo "set shared/default-x-display-manager gdm3" | debconf-communicate >/dev/null 2>&1 || true
+fi
+mkdir -p /etc/skel
+cat > /etc/skel/.dmrc <<EOF
+[Desktop]
+Session=gnome
+EOF
+
+# 4. Neutraliza el wallpaper de Kali si quedó como activo (sin borrar paquetes).
+KALI_BG="/usr/share/backgrounds/kali"
+[ -d "$KALI_BG" ] && echo "[ElaOS] (wallpaper Kali presente pero NO usado; ElaOS fija el suyo)"
+
+echo "[ElaOS] Look macOS asegurado."

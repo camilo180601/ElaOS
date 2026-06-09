@@ -1,0 +1,22 @@
+# Artefactos de build de live-build (pesados / regenerables)
+*.iso
+*.img
+*.log
+*.packages
+*.files
+*.contents
+.build/
+cache/
+chroot/
+chroot.files
+binary/
+binary.*
+local/
+.stage/
+
+# Archivos de config que regenera `auto/config` en cada build
+config/bootstrap
+config/binary
+config/chroot
+config/common
+config/source

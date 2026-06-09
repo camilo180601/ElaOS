@@ -1,0 +1,28 @@
+# Escritorio GNOME curado (estable, sin bloatware de juegos/extras)
+gnome-shell
+gnome-session
+gdm3
+gnome-control-center
+gnome-tweaks
+gnome-shell-extension-manager
+gnome-shell-extensions
+nautilus
+
+# Aplicaciones base
+gnome-terminal
+gnome-text-editor
+firefox-esr
+file-roller
+eog
+evince
+
+# Red, audio y firmware
+network-manager-gnome
+pipewire
+pipewire-pulse
+wireplumber
+firmware-linux
+
+# Tipografías cercanas a San Francisco / Menlo
+fonts-inter
+fonts-firacode

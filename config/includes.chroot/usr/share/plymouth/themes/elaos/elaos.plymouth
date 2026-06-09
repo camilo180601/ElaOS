@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=ElaOS
+Description=ElaOS boot splash — logo centrado sobre fondo oscuro
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/elaos
+ScriptFile=/usr/share/plymouth/themes/elaos/elaos.script

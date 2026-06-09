@@ -1,0 +1,30 @@
+#!/bin/sh
+# Configuración reproducible de live-build para ElaOS (base: Kali Rolling).
+# Se regenera en cada build a partir de este archivo (versionable en Git).
+set -e
+
+ARCH="${ELAOS_ARCH:-amd64}"
+
+if [ "$ARCH" = "arm64" ]; then
+    BOOTLOADERS="grub-efi"
+else
+    BOOTLOADERS="syslinux,grub-efi"
+fi
+
+lb config noauto \
+    --mode debian \
+    --distribution kali-rolling \
+    --architectures "${ARCH}" \
+    --bootloaders "${BOOTLOADERS}" \
+    --archive-areas "main contrib non-free non-free-firmware" \
+    --mirror-bootstrap "http://http.kali.org/kali" \
+    --mirror-chroot "http://http.kali.org/kali" \
+    --mirror-binary "http://http.kali.org/kali" \
+    --keyring-packages kali-archive-keyring \
+    --debian-installer none \
+    --iso-application "ElaOS" \
+    --iso-volume "ElaOS" \
+    --iso-publisher "Camilo Lopez" \
+    --memtest none \
+    --bootappend-live "boot=live components quiet splash" \
+    "${@}"

@@ -1,0 +1,26 @@
+# Override de apariencia de ElaOS.
+# El nombre 'zzz-' garantiza que se procese DESPUÉS de los overrides de Kali
+# (p. ej. los de kali-themes/Flat-Remix) → el look macOS siempre gana.
+
+[org.gnome.desktop.interface]
+gtk-theme='WhiteSur-Light'
+icon-theme='WhiteSur'
+cursor-theme='McMojave-cursors'
+font-name='Inter 11'
+monospace-font-name='Fira Code 11'
+color-scheme='default'
+enable-hot-corners=true
+
+[org.gnome.desktop.background]
+picture-uri='file:///usr/share/backgrounds/elaos/default.jpg'
+picture-uri-dark='file:///usr/share/backgrounds/elaos/default.jpg'
+picture-options='zoom'
+
+[org.gnome.desktop.screensaver]
+picture-uri='file:///usr/share/backgrounds/elaos/default.jpg'
+
+[org.gnome.desktop.wm.preferences]
+button-layout='close,minimize,maximize:'
+
+[org.gnome.shell]
+enabled-extensions=['dash-to-dock@micxgx.gmail.com']
