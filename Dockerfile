@@ -9,14 +9,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         git \
         curl \
         xorriso \
-        isolinux \
-        syslinux-common \
-        grub-efi-amd64-bin \
-        grub-efi-arm64-bin \
         dosfstools \
         mtools \
         squashfs-tools \
         apt-utils \
+    && ARCH="$(dpkg --print-architecture)" \
+    && if [ "$ARCH" = "amd64" ]; then \
+           apt-get install -y --no-install-recommends \
+               isolinux syslinux-common grub-pc-bin grub-efi-amd64-bin; \
+       else \
+           apt-get install -y --no-install-recommends grub-efi-arm64-bin; \
+       fi \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /build

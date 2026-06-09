@@ -36,10 +36,30 @@ decenas de GB, alto riesgo de fallo). Recomendado:
 
 ## Construir la ISO
 
+### En la nube (recomendado) — GitHub Actions
+
+El workflow [`.github/workflows/build-iso.yml`](.github/workflows/build-iso.yml)
+construye **ambas arquitecturas** en runners nativos (amd64 y arm64), sin
+emulación. Dispáralo desde la pestaña **Actions → Build ISO → Run workflow**
+(eliges el arsenal: top10 / default / everything), o publica un tag `vX.Y` para
+que genere las ISOs y las suba a un Release.
+
+> El arsenal `everything` puede no caber en los runners gratuitos (disco/tiempo);
+> para esa edición usa `default`/`top10` en CI o un runner self-hosted x86 grande.
+
+### Local (Docker)
+
 ```bash
-./build.sh amd64    # PC Intel/AMD — gaming + seguridad completos
-./build.sh arm64    # ARM / Apple Silicon — nativo, sin Steam/Wine
+./build.sh amd64    # PC Intel/AMD (en Mac M-series se emula: lento)
+./build.sh arm64    # ARM / Apple Silicon (nativo, rápido)
+
+# Elegir el tamaño del arsenal:
+ELAOS_KALI_META=kali-tools-top10     ./build.sh arm64   # ligero
+ELAOS_KALI_META=kali-linux-everything ./build.sh amd64  # todo (máquina potente)
 ```
+
+Por defecto se usa `kali-linux-default`. La lista de paquetes Kali se **genera**
+en cada build a partir de `ELAOS_KALI_META` (no se versiona).
 
 ## ElaOS Terminal
 

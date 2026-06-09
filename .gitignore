@@ -20,3 +20,6 @@ config/binary
 config/chroot
 config/common
 config/source
+
+# El arsenal Kali se genera en cada build (ver build.sh / CI)
+config/package-lists/kali-tools.list.chroot
