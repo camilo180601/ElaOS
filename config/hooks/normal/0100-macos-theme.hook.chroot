@@ -27,11 +27,16 @@ rm -rf "$TMP"; mkdir -p "$TMP"; cd "$TMP" || exit 0
 
 log "Instalando tema GTK WhiteSur..."
 if clone https://github.com/vinceliuice/WhiteSur-gtk-theme.git WhiteSur-gtk-theme; then
-    if out="$(cd WhiteSur-gtk-theme && bash ./install.sh -d /usr/share/themes -c Light -c Dark -l 2>&1)"; then
-        log "WhiteSur-gtk instalado."
+    # Sin -l (libadwaita): toca gsettings/GTK4 y falla en el chroot.
+    # bash -x deja la traza por si algo más rompe.
+    ( cd WhiteSur-gtk-theme && HOME=/root bash -x ./install.sh -d /usr/share/themes -c Light -c Dark ) \
+        > /tmp/whitesur-gtk.log 2>&1
+    rc=$?
+    if [ "$rc" -eq 0 ]; then
+        log "WhiteSur-gtk instalado correctamente."
     else
-        log "AVISO: install.sh de WhiteSur-gtk falló. Últimas líneas:"
-        echo "$out" | tail -25
+        log "AVISO: WhiteSur-gtk falló (rc=$rc). Traza (últimas 30 líneas):"
+        tail -30 /tmp/whitesur-gtk.log
     fi
 fi
 
