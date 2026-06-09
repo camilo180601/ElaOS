@@ -1,46 +1,69 @@
 #!/bin/sh
-# Instala la capa visual estilo macOS Big Sur dentro del sistema vivo:
-#   - Tema GTK/Shell  : WhiteSur
-#   - Iconos          : WhiteSur
-#   - Cursores        : McMojave
-#   - Dock inferior   : extensión Dash to Dock
-#   - Wallpaper        : WhiteSur
-set -e
+# Instala la capa visual estilo macOS Big Sur dentro del sistema vivo.
+# Resiliente: un fallo de descarga NO aborta el build (deja warning y sigue).
+# Verboso: los clones reintentan y muestran el error real de git si falla.
+
+log() { echo "[ElaOS] $*"; }
+
+# clone <url> <dir> — hasta 3 intentos, muestra el error de git
+clone() {
+    _url="$1"; _dir="$2"
+    i=1
+    while [ "$i" -le 3 ]; do
+        rm -rf "$_dir"
+        if git clone --depth=1 "$_url" "$_dir"; then
+            return 0
+        fi
+        log "AVISO: clone de $_url falló (intento $i/3), reintento..."
+        i=$((i + 1))
+        sleep 3
+    done
+    log "ERROR: no se pudo clonar $_url tras 3 intentos."
+    return 1
+}
 
 TMP="/tmp/elaos-theme"
-rm -rf "$TMP"
-mkdir -p "$TMP"
-cd "$TMP"
+rm -rf "$TMP"; mkdir -p "$TMP"; cd "$TMP" || exit 0
 
-echo "[ElaOS] Instalando tema GTK WhiteSur..."
-git clone --depth=1 https://github.com/vinceliuice/WhiteSur-gtk-theme.git
-( cd WhiteSur-gtk-theme && ./install.sh -d /usr/share/themes -c Light -c Dark -l )
+log "Instalando tema GTK WhiteSur..."
+if clone https://github.com/vinceliuice/WhiteSur-gtk-theme.git WhiteSur-gtk-theme; then
+    ( cd WhiteSur-gtk-theme && ./install.sh -d /usr/share/themes -c Light -c Dark -l ) \
+        || log "AVISO: install.sh de WhiteSur-gtk falló."
+fi
 
-echo "[ElaOS] Instalando iconos WhiteSur..."
-git clone --depth=1 https://github.com/vinceliuice/WhiteSur-icon-theme.git
-( cd WhiteSur-icon-theme && ./install.sh -d /usr/share/icons )
+log "Instalando iconos WhiteSur..."
+if clone https://github.com/vinceliuice/WhiteSur-icon-theme.git WhiteSur-icon-theme; then
+    ( cd WhiteSur-icon-theme && ./install.sh -d /usr/share/icons ) \
+        || log "AVISO: install.sh de iconos falló."
+fi
 
-echo "[ElaOS] Instalando cursores McMojave..."
-git clone --depth=1 https://github.com/vinceliuice/McMojave-cursors.git
-( cd McMojave-cursors && ./install.sh )
+log "Instalando cursores McMojave..."
+if clone https://github.com/vinceliuice/McMojave-cursors.git McMojave-cursors; then
+    ( cd McMojave-cursors && ./install.sh ) || log "AVISO: install.sh de cursores falló."
+fi
 
-echo "[ElaOS] Instalando Dash to Dock (dock inferior estilo macOS)..."
-git clone --depth=1 https://github.com/micheleg/dash-to-dock.git
-( cd dash-to-dock && make install ) || echo "[ElaOS] aviso: Dash to Dock no se pudo compilar, continúo."
+log "Instalando Dash to Dock (dock inferior)..."
+if clone https://github.com/micheleg/dash-to-dock.git dash-to-dock; then
+    ( cd dash-to-dock && make install ) || log "AVISO: Dash to Dock no compiló."
+fi
 
-echo "[ElaOS] Instalando wallpaper por defecto..."
-git clone --depth=1 https://github.com/vinceliuice/WhiteSur-wallpapers.git
-mkdir -p /usr/share/backgrounds/elaos
-WP="$(find WhiteSur-wallpapers -type f \( -name '*.jpg' -o -name '*.png' \) | head -n1)"
-[ -n "$WP" ] && cp "$WP" /usr/share/backgrounds/elaos/default.jpg
+log "Instalando wallpaper por defecto..."
+if clone https://github.com/vinceliuice/WhiteSur-wallpapers.git WhiteSur-wallpapers; then
+    mkdir -p /usr/share/backgrounds/elaos
+    WP="$(find WhiteSur-wallpapers -type f \( -name '*.jpg' -o -name '*.png' \) | head -n1)"
+    [ -n "$WP" ] && cp "$WP" /usr/share/backgrounds/elaos/default.jpg
+fi
 
-echo "[ElaOS] Aplicando tema de login (GDM) estilo macOS..."
-( cd WhiteSur-gtk-theme && ./tweaks.sh -g -b /usr/share/backgrounds/elaos/default.jpg ) \
-    || echo "[ElaOS] aviso: no se pudo aplicar el tema de GDM, continúo."
+log "Aplicando tema de login (GDM) estilo macOS..."
+if [ -d WhiteSur-gtk-theme ]; then
+    ( cd WhiteSur-gtk-theme && ./tweaks.sh -g -b /usr/share/backgrounds/elaos/default.jpg ) \
+        || log "AVISO: no se pudo aplicar el tema de GDM."
+fi
 
-echo "[ElaOS] Compilando base de datos dconf con los defaults..."
+log "Compilando base de datos dconf..."
 dconf update || true
 
 cd /
 rm -rf "$TMP"
-echo "[ElaOS] Capa visual macOS instalada."
+log "Capa visual macOS procesada."
+exit 0
