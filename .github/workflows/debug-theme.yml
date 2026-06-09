@@ -18,10 +18,10 @@ jobs:
               libgtk-3-bin gettext imagemagick sudo ca-certificates gnome-shell
             git clone --depth=1 https://github.com/vinceliuice/WhiteSur-gtk-theme.git /tmp/ws
             cd /tmp/ws
-            echo "========== INSTALL.SH (traza bash -x) =========="
+            echo "========== INSTALL.SH dentro de un pseudo-TTY (script) =========="
             set +e
-            bash -x ./install.sh -d /usr/share/themes -c Light -c Dark > /tmp/out.log 2>&1
+            script -qec "./install.sh -d /usr/share/themes -c Light -c Dark" /dev/null
             echo "========== EXIT=$? =========="
-            echo "----- últimas 80 líneas de la traza -----"
-            tail -80 /tmp/out.log
+            echo "----- temas WhiteSur instalados -----"
+            ls /usr/share/themes/ | grep -i whitesur || echo "NINGUNO"
           '
