@@ -19,11 +19,11 @@ jobs:
             git clone --depth=1 https://github.com/vinceliuice/WhiteSur-gtk-theme.git /tmp/ws
             cd /tmp/ws
             set +e
-            echo "========== --help (flags) =========="
-            ./install.sh --help 2>&1 | head -70
-            echo "========== INSTALL.SH SIN gnome-shell =========="
-            ./install.sh -d /usr/share/themes -c Light -c Dark
-            echo "========== EXIT=$? =========="
+            echo "========== Neutralizando set -Eeo pipefail para ver el error real =========="
+            grep -rl "set -Eeo pipefail" . | xargs sed -i "s/set -Eeo pipefail/set +e/g"
+            echo "========== INSTALL.SH (modo no estricto) =========="
+            ./install.sh -d /usr/share/themes -c Light -c Dark 2>&1 | tail -50
+            echo "========== EXIT=${PIPESTATUS[0]} =========="
             echo "----- temas WhiteSur instalados -----"
             ls /usr/share/themes/ | grep -i whitesur || echo "NINGUNO"
           '
