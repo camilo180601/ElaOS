@@ -5,6 +5,12 @@
 
 log() { echo "[ElaOS] $*"; }
 
+# Los scripts de WhiteSur usan lib-core.sh, que resuelve el usuario con
+# getent passwd "$USER"; en el chroot $USER está vacío y getent devuelve 2,
+# abortando por 'set -Eeo pipefail'. Exportar USER/HOME lo soluciona.
+export HOME=/root
+export USER=root
+
 # clone <url> <dir> — hasta 3 intentos, muestra el error de git
 clone() {
     _url="$1"; _dir="$2"
