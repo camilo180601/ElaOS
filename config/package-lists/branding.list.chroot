@@ -2,7 +2,12 @@
 git
 sassc
 libglib2.0-dev-bin
+libglib2.0-dev
 gnome-themes-extra
+libxml2-utils
+libgtk-3-bin
+gettext
+sudo
 
 # Splash de arranque (reemplaza el branding de Kali por uno limpio)
 plymouth

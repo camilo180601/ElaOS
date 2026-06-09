@@ -27,8 +27,12 @@ rm -rf "$TMP"; mkdir -p "$TMP"; cd "$TMP" || exit 0
 
 log "Instalando tema GTK WhiteSur..."
 if clone https://github.com/vinceliuice/WhiteSur-gtk-theme.git WhiteSur-gtk-theme; then
-    ( cd WhiteSur-gtk-theme && ./install.sh -d /usr/share/themes -c Light -c Dark -l ) \
-        || log "AVISO: install.sh de WhiteSur-gtk falló."
+    if out="$(cd WhiteSur-gtk-theme && bash ./install.sh -d /usr/share/themes -c Light -c Dark -l 2>&1)"; then
+        log "WhiteSur-gtk instalado."
+    else
+        log "AVISO: install.sh de WhiteSur-gtk falló. Últimas líneas:"
+        echo "$out" | tail -25
+    fi
 fi
 
 log "Instalando iconos WhiteSur..."
