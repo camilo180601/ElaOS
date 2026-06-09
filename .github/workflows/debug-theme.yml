@@ -15,12 +15,14 @@ jobs:
             apt-get update -qq
             apt-get install -y --no-install-recommends \
               git sassc libglib2.0-dev-bin libglib2.0-dev libxml2-utils \
-              libgtk-3-bin gettext imagemagick sudo ca-certificates gnome-shell
+              libgtk-3-bin gettext imagemagick sudo ca-certificates
             git clone --depth=1 https://github.com/vinceliuice/WhiteSur-gtk-theme.git /tmp/ws
             cd /tmp/ws
-            echo "========== INSTALL.SH dentro de un pseudo-TTY (script) =========="
             set +e
-            script -qec "./install.sh -d /usr/share/themes -c Light -c Dark" /dev/null
+            echo "========== --help (flags) =========="
+            ./install.sh --help 2>&1 | head -70
+            echo "========== INSTALL.SH SIN gnome-shell =========="
+            ./install.sh -d /usr/share/themes -c Light -c Dark
             echo "========== EXIT=$? =========="
             echo "----- temas WhiteSur instalados -----"
             ls /usr/share/themes/ | grep -i whitesur || echo "NINGUNO"
