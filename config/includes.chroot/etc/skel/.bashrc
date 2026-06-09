@@ -23,7 +23,11 @@ if command -v starship >/dev/null 2>&1; then
     eval "$(starship init bash)"
 fi
 
-# --- Bienvenida con el logo de ElaOS ---
-if [[ $- == *i* ]] && command -v fastfetch >/dev/null 2>&1; then
-    fastfetch
+if [[ $- == *i* ]]; then
+    # Asistente de personalización (solo la primera vez)
+    if [[ ! -f "$HOME/.config/elaos/term-setup-done" ]] && command -v elaos-term-setup >/dev/null 2>&1; then
+        elaos-term-setup || true
+    fi
+    # Bienvenida con el logo de ElaOS
+    command -v fastfetch >/dev/null 2>&1 && fastfetch
 fi

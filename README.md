@@ -44,6 +44,10 @@ decenas de GB, alto riesgo de fallo). Recomendado:
 Terminal con identidad propia: **Kitty** (emulador GPU, estilo macOS) + **Starship**
 (prompt con la paleta de marca morado→coral) + **fastfetch** (bienvenida con el logo).
 
+- **Asistente al primer arranque:** la primera vez que abres la terminal,
+  `elaos-term-setup` te deja elegir fondo (oscuro/claro) y color de acento
+  (presets de marca o un hex propio) y lo aplica al instante. Relánzalo cuando
+  quieras con `elaos-term-setup`.
 - Tema claro/oscuro alternable:
   ```bash
   elaos-term-theme dark    # o: tema dark
