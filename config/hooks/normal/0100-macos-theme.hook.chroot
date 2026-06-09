@@ -28,32 +28,44 @@ clone() {
     return 1
 }
 
+# Los instaladores de vinceliuice usan 'set -Eeo pipefail' + una animación que
+# hace 'echo' a un fd que se rompe (EPIPE) en entornos sin terminal → abortan
+# JUSTO tras instalar. Neutralizar el modo estricto deja completar la instalación.
+patch_strict() {
+    grep -rl 'set -Eeo pipefail' "$1" 2>/dev/null | xargs -r sed -i 's/set -Eeo pipefail/set +e/g'
+}
+
 TMP="/tmp/elaos-theme"
 rm -rf "$TMP"; mkdir -p "$TMP"; cd "$TMP" || exit 0
 
 log "Instalando tema GTK WhiteSur..."
 if clone https://github.com/vinceliuice/WhiteSur-gtk-theme.git WhiteSur-gtk-theme; then
+    patch_strict WhiteSur-gtk-theme
     # Sin -l (libadwaita): toca gsettings/GTK4 y falla en el chroot.
     ( cd WhiteSur-gtk-theme && ./install.sh -d /usr/share/themes -c Light -c Dark ) \
-        > /tmp/whitesur-gtk.log 2>&1
-    rc=$?
-    if [ "$rc" -eq 0 ]; then
-        log "WhiteSur-gtk instalado correctamente."
+        > /tmp/whitesur-gtk.log 2>&1 || true
+    if ls /usr/share/themes/ 2>/dev/null | grep -qi '^WhiteSur'; then
+        log "WhiteSur-gtk instalado ($(ls /usr/share/themes | grep -ci whitesur) variantes)."
     else
-        log "AVISO: WhiteSur-gtk falló (rc=$rc). Salida (últimas 60 líneas):"
-        tail -60 /tmp/whitesur-gtk.log
+        log "AVISO: WhiteSur-gtk no quedó instalado. Salida (últimas 40 líneas):"
+        tail -40 /tmp/whitesur-gtk.log
     fi
 fi
 
 log "Instalando iconos WhiteSur..."
 if clone https://github.com/vinceliuice/WhiteSur-icon-theme.git WhiteSur-icon-theme; then
-    ( cd WhiteSur-icon-theme && ./install.sh -d /usr/share/icons ) \
-        || log "AVISO: install.sh de iconos falló."
+    patch_strict WhiteSur-icon-theme
+    ( cd WhiteSur-icon-theme && ./install.sh -d /usr/share/icons ) > /dev/null 2>&1 || true
+    ls /usr/share/icons/ 2>/dev/null | grep -qi '^WhiteSur' \
+        && log "Iconos WhiteSur instalados." || log "AVISO: iconos WhiteSur no instalados."
 fi
 
 log "Instalando cursores McMojave..."
 if clone https://github.com/vinceliuice/McMojave-cursors.git McMojave-cursors; then
-    ( cd McMojave-cursors && ./install.sh ) || log "AVISO: install.sh de cursores falló."
+    patch_strict McMojave-cursors
+    ( cd McMojave-cursors && ./install.sh ) > /dev/null 2>&1 || true
+    ls /usr/share/icons/ 2>/dev/null | grep -qi 'McMojave' \
+        && log "Cursores McMojave instalados." || log "AVISO: cursores no instalados."
 fi
 
 log "Instalando Dash to Dock (dock inferior)..."
