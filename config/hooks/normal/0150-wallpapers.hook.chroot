@@ -1,0 +1,31 @@
+#!/bin/sh
+# Genera los wallpapers propios de ElaOS con la paleta de marca (ImageMagick).
+set -e
+
+DIR="/usr/share/backgrounds/elaos"
+mkdir -p "$DIR"
+
+if ! command -v convert >/dev/null 2>&1; then
+    echo "[ElaOS] aviso: ImageMagick no disponible, omito wallpapers generados."
+    exit 0
+fi
+
+echo "[ElaOS] Generando wallpapers de marca..."
+
+# Degradado vibrante morado → coral (fondo principal)
+convert -size 3840x2160 -define gradient:angle=135 \
+    gradient:'#8637E0'-'#F16E62' "$DIR/elaos-gradient.png" || true
+
+# Fondo oscuro sutil (para modo oscuro / pantalla de bloqueo)
+convert -size 3840x2160 -define gradient:angle=135 \
+    gradient:'#16161E'-'#2A1C3A' "$DIR/elaos-dark.png" || true
+
+# Versión oscura con el logo centrado (marca de agua)
+if [ -f /usr/share/elaos/logo.png ] && [ -f "$DIR/elaos-dark.png" ]; then
+    convert "$DIR/elaos-dark.png" \
+        \( /usr/share/elaos/logo.png -resize 900x \) \
+        -gravity center -compose over -composite \
+        "$DIR/elaos-dark-logo.png" || true
+fi
+
+echo "[ElaOS] Wallpapers generados en $DIR."

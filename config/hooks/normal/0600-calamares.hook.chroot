@@ -1,0 +1,11 @@
+#!/bin/sh
+# Hace que Calamares use el branding de ElaOS en vez del genérico de Debian.
+set -e
+
+SF="/etc/calamares/settings.conf"
+if [ -f "$SF" ]; then
+    sed -i 's/^\([[:space:]]*\)branding:.*/\1branding: elaos/' "$SF"
+    echo "[ElaOS] Calamares ahora usa el branding 'elaos'."
+else
+    echo "[ElaOS] aviso: $SF no existe (¿calamares-settings-debian instalado?)."
+fi

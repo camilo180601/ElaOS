@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Bienvenida de ElaOS
+Comment=Tour y elección de modo de ElaOS
+Exec=elaos-welcome
+Icon=/usr/share/elaos/logo.png
+Terminal=false
+Categories=System;Utility;
+Keywords=ElaOS;bienvenida;welcome;modo;

@@ -1,0 +1,37 @@
+#!/bin/sh
+# Capa de desarrollo: VS Code, .NET SDK y extras que no están en los repos base.
+set -e
+
+echo "[ElaOS] Configurando capa de desarrollo..."
+
+# --- VS Code (repositorio oficial de Microsoft) ---
+if ! command -v code >/dev/null 2>&1; then
+    curl -fsSL https://packages.microsoft.com/keys/microsoft.asc \
+        | gpg --dearmor -o /usr/share/keyrings/microsoft.gpg 2>/dev/null || true
+    echo "deb [arch=amd64,arm64 signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/code stable main" \
+        > /etc/apt/sources.list.d/vscode.list
+    apt-get update || true
+    apt-get install -y code || echo "[ElaOS] aviso: VS Code no se instaló."
+fi
+
+# --- .NET SDK (script oficial, agnóstico de distro) ---
+if ! command -v dotnet >/dev/null 2>&1; then
+    if curl -fsSL https://dot.net/v1/dotnet-install.sh -o /tmp/dotnet-install.sh; then
+        bash /tmp/dotnet-install.sh --channel LTS --install-dir /usr/local/dotnet \
+            || echo "[ElaOS] aviso: .NET SDK no se instaló."
+        if [ -x /usr/local/dotnet/dotnet ]; then
+            ln -sf /usr/local/dotnet/dotnet /usr/local/bin/dotnet
+            printf 'export DOTNET_ROOT=/usr/local/dotnet\nexport PATH=$PATH:/usr/local/dotnet\n' \
+                > /etc/profile.d/dotnet.sh
+        fi
+    fi
+    rm -f /tmp/dotnet-install.sh
+fi
+
+# --- Docker Compose (plugin) y servicio ---
+apt-get install -y docker-compose || true
+systemctl enable docker.service 2>/dev/null || true
+
+# Instalador de Laravel disponible globalmente vía composer para cada usuario:
+#   composer global require laravel/installer
+echo "[ElaOS] Capa de desarrollo lista (PHP/Composer, Node, Docker, VS Code, .NET)."

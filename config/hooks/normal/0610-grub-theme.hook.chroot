@@ -1,0 +1,22 @@
+#!/bin/sh
+# Aplica el tema de GRUB de ElaOS en el sistema instalado.
+# (En el ISO live el menú lo genera live-build; esto afecta al sistema tras instalar.)
+set -e
+
+GD="/etc/default/grub"
+THEME="/usr/share/grub/themes/elaos/theme.txt"
+
+if [ -f "$GD" ]; then
+    if grep -q '^GRUB_THEME=' "$GD"; then
+        sed -i "s|^GRUB_THEME=.*|GRUB_THEME=$THEME|" "$GD"
+    else
+        echo "GRUB_THEME=$THEME" >> "$GD"
+    fi
+    # Resolución del menú para que el tema se vea nítido
+    if ! grep -q '^GRUB_GFXMODE=' "$GD"; then
+        echo "GRUB_GFXMODE=1920x1080,auto" >> "$GD"
+    fi
+    echo "[ElaOS] Tema de GRUB ElaOS configurado."
+else
+    echo "[ElaOS] aviso: /etc/default/grub no existe aún; lo aplicará el instalador."
+fi

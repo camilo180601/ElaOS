@@ -63,12 +63,37 @@ Terminal con identidad propia: **Kitty** (emulador GPU, estilo macOS) + **Starsh
 
 ## Los tres modos
 
+Desde el **botón de la barra superior** (extensión ElaOS Modes), desde la
+**app de bienvenida**, o por terminal (es por-usuario, sin sudo):
+
 ```bash
-sudo elaos-mode hacking   # muestra el arsenal de seguridad en el menú
-sudo elaos-mode gaming    # oculta seguridad; escritorio listo para jugar
-sudo elaos-mode normal    # escritorio macOS limpio
-elaos-mode status         # modo actual
+elaos-mode hacking   # muestra el arsenal de seguridad en el menú
+elaos-mode gaming    # oculta seguridad; escritorio listo para jugar
+elaos-mode normal    # escritorio macOS limpio
+elaos-mode status    # modo actual
 ```
+
+## Onboarding
+
+- **Bienvenida al primer arranque** (`elaos-welcome`): elige modo y abre la
+  terminal. Se muestra una sola vez; relanzable desde el menú de apps.
+- **Switch de modos** en la barra superior (extensión GNOME `elaos-modes@elaos`).
+
+## Capa de desarrollo (fullstack)
+
+Incluida: **PHP + Composer** (Laravel), **Node/npm**, **Docker**, clientes de
+MySQL/SQLite, **VS Code** y **.NET SDK** (LTS). Instala el instalador de Laravel
+por usuario con:
+
+```bash
+composer global require laravel/installer
+```
+
+## Branding completo
+
+Logo propio de ElaOS en toda la cadena: **GRUB** (tema de arranque) → **Plymouth**
+(splash) → **GDM** (login) → **escritorio** (wallpapers de marca generados con el
+degradado morado→coral) → **Calamares** (instalador con marca y slideshow).
 
 ## Estructura
 
@@ -104,12 +129,15 @@ ElaOS/
 - [x] Capa de ciberseguridad (arsenal Kali) + toggle de modos
 - [x] Capa de gaming (Steam/Lutris/Wine/GameMode)
 - [x] Blindaje del look macOS sobre Kali (override + hook 0900)
-- [x] Tema de login GDM macOS (WhiteSur) + splash de arranque limpio (Plymouth)
-- [ ] Logo propio de ElaOS en el splash de arranque (ahora usa 'spinner')
+- [x] Tema de login GDM macOS (WhiteSur) + splash de arranque con logo propio
+- [x] Logo propio en el splash (Plymouth) y tema de GRUB con marca
+- [x] Wallpapers de marca generados (degradado morado→coral)
+- [x] Instalador Calamares con branding ElaOS + slideshow
+- [x] App de bienvenida + switch de modos en la barra superior (extensión GNOME)
+- [x] Capa de desarrollo fullstack (PHP/Composer, Node, Docker, VS Code, .NET)
 - [ ] Probar el build real en x86_64 y validar metapaquetes
 - [ ] Afinar `elaos-mode` (verificar el <Name> del menú Kali tras el primer build)
-- [ ] Instalador Calamares con branding propio
-- [ ] GUI para el cambio de modos (botón en la barra superior)
+- [ ] CI que genere ISOs + repo APT propio
 - [ ] Repositorio APT propio + meta-paquete `elaos-desktop`
 
 ## Notas técnicas

@@ -1,0 +1,30 @@
+# Capa de desarrollo fullstack de ElaOS
+build-essential
+git
+curl
+wget
+
+# JavaScript / Node
+nodejs
+npm
+
+# PHP + Composer (Laravel)
+php
+php-cli
+php-mbstring
+php-xml
+php-curl
+php-zip
+php-bcmath
+php-gd
+php-mysql
+php-sqlite3
+composer
+
+# Bases de datos (clientes) y utilidades
+default-mysql-client
+sqlite3
+jq
+
+# Contenedores
+docker.io

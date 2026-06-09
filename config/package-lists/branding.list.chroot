@@ -9,3 +9,6 @@ gtk2-engines-murrine
 plymouth
 plymouth-themes
 plymouth-label
+
+# Generación de wallpapers de marca
+imagemagick

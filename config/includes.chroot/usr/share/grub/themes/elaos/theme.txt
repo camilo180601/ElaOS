@@ -1,0 +1,40 @@
+# Tema de GRUB de ElaOS — fondo de marca oscuro + logo
+title-text: ""
+desktop-color: "#16161E"
+message-color: "#9A9AAE"
+terminal-font: "Unifont Regular 16"
+
+# Logo de ElaOS (variante clara sobre fondo oscuro)
++ image {
+    top   = 16%
+    left  = 50%-300
+    width = 600
+    height = 140
+    file  = "logo.png"
+}
+
+# Menú de arranque
++ boot_menu {
+    left   = 25%
+    top    = 45%
+    width  = 50%
+    height = 38%
+    item_color          = "#9A9AAE"
+    selected_item_color = "#FFFFFF"
+    item_height   = 36
+    item_padding  = 8
+    item_spacing  = 6
+    icon_width    = 0
+    icon_height   = 0
+}
+
+# Pie de página
++ label {
+    top   = 90%
+    left  = 0
+    width = 100%
+    align = "center"
+    color = "#B92DA1"
+    text  = "ElaOS · The desktop, refined"
+    font  = "Unifont Regular 16"
+}

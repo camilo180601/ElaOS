@@ -1,0 +1,7 @@
+{
+  "uuid": "elaos-modes@elaos",
+  "name": "ElaOS Modes",
+  "description": "Cambia entre los modos Normal, Gaming y Hacking de ElaOS desde la barra superior.",
+  "shell-version": ["45", "46", "47", "48"],
+  "version": 1
+}

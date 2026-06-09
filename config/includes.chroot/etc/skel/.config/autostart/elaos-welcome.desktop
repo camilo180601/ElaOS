@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=ElaOS Welcome
+Comment=Bienvenida de ElaOS (primer arranque)
+Exec=elaos-welcome-once
+Icon=/usr/share/elaos/logo.png
+Terminal=false
+X-GNOME-Autostart-enabled=true
+X-GNOME-Autostart-Delay=3
